@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+    app:
+        image: atletica:0.1
+        restart: unless-stopped
+        container_name: app
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/opt/exemplo
+        ports:
+            - 5000:5000
+        depends_on: 
+            - mongo
+        command: python app.py
+        # networks: 
+        #     - test
+
+# networks: 
+#     test:
+#         driver: bridge
+#         name: test
+
+# docker-compose up -d
+# docker run -it --net=test ubuntu /bin/bash
+# apt-get update && apt-get --assume-yes install curl
+# curl http://app:5000

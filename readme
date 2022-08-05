@@ -1,6 +1,12 @@
-# Using same network in containers outside docker-compose
+# Docker network example and explanation
 
-Sometimes you need to connect services defined in diferent composes. On those cases, you need to connect both services in a single network.
+>This is a explanation with examples about docker network. Hope you enjoy (:
+
+When we talk about diferent docker services connecting one another, it is implicit that we're using networks. Depending on what you're coding, maybe there is no reasons to worry about create and managing networks because many times Docker runs everything for us. 
+
+But sometimes we also need to create something different or outside of the box and you're going to need to understand what is going on inside your Docker container.
+
+------------------------------------------------------
 
 Docker implements the "networks" top level definition for network config for services. Using that resource, we can provide a default configuration on running containers and other composes.
 

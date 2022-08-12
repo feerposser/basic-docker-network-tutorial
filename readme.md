@@ -1,6 +1,8 @@
-# Docker network example and explanation
+(building)
 
->This is a explanation with examples about docker network. Hope you enjoy (:
+# Basic Docker network example and explanation
+
+>This is a explanation with examples about docker network for developers. Hope you enjoy (:
 
 When we talk about diferent docker services connecting one another, it is implicit that we're using networks. Depending on what you're coding, maybe there is no reasons to worry about create and managing networks because many times Docker runs everything for us. 
 
@@ -39,3 +41,12 @@ curl http://app
 ### First step
 
 First things first, let's up 
+
+
+
+
+
+
+# Conclusion
+
+We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex shit on that video. Get a look if you want to dive into network or in devops career.

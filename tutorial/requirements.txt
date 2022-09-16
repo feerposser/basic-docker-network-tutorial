@@ -1,1 +1,2 @@
 Flask
+flask-mongoengine==1.0.0

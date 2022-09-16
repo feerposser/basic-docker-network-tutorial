@@ -1,14 +1,33 @@
 (building)
 
-# Basic Docker network example and explanation
+# Basic Docker network for developers
 
->This is a explanation with examples about docker network for developers. Hope you enjoy (:
+>This is a explanation with examples about `docker network` for developers. Hope you enjoy (:
 
-When we talk about diferent docker services connecting one another, it is implicit that we're using networks. Depending on what you're coding, maybe there is no reasons to worry about create and managing networks because many times Docker runs everything for us. 
+When we talk about diferent docker services connecting each other, it is implicit that we're using networks. Depending on what you're creating, maybe there is no reasons to worry about create and managing networks because sometimes Docker runs everything for us in background and everything works fine. 
 
-But sometimes we also need to create something different or outside of the box and you're going to need to understand what is going on inside your Docker container.
+But sometimes we also need to create something different or outside of the box and you're going need to understand what is going on inside your Docker container/services.
+
+## What you're going to find (and not to find) in this tutorial
+
+- [x] A basic `Python + Flask` app that connects in a `MongoDB` database
+- [x] `Docker run` command line to create and connect containers
+- [x] How to create and check basic networks in docker
+- [x] Use `Docker Compose` and understant what is going on under the covers
+- [x] Understand how `docker` uses `networks` to connect `containers/services`
+- [x] How can you find what is wrong with your services connection issues
+- [ ] Learn how to use advanced `docker networks`
+- [ ] Learn how to configure `Docker Compose`
+- [ ] Get all the basics for running containers and services on docker 
+
+
+
+
+
 
 ------------------------------------------------------
+
+
 
 Docker implements the "networks" top level definition for network config for services. Using that resource, we can provide a default configuration on running containers and other composes.
 

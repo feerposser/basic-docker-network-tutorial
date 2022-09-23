@@ -91,6 +91,17 @@ Here is what the command are actually doing:
 
 <details>
 
+By default, Docker have three default network modes: bridge, host and none. We can see this by typing `docker network ls`:
+
+![image](/assets/img/2.png)
+
+Those are some of the [default Docker network drivers](https://docs.docker.com/network/). Bridge, the first one, as his name suggests, is used by containers that need to communicate. This is the default network driver of any container when we don't specify a driver. Also, this is the most commom drive that we're going to use for simple services aplications.
+
+Host is a driver that allows the container bind to the host network. If we used this driver, that means the container would beacome just like any other machine insede the network host.
+
+Finally, the none driver means that really there is none network enable on the running container.
+
+In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#conclusion) topic after reading (:
 
 
 </details>

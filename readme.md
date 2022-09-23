@@ -101,12 +101,34 @@ Host is a driver that allows the container bind to the host network. If we used 
 
 Finally, the none driver means that really there is none network enable on the running container.
 
-In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#conclusion) topic after reading (:
+><small>In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#conclusion) topic after reading (:</small>
 
+As we saw, bridge is the default driver of any non specified container. So, our tutorial-container must be using this driver. We can see if this is true by accessing the network or the container inspector:
+
+Typing `docker network inspect bridge` it will show us the bridge driver configuration. And in some point there is an object called "Containers" that contains all the containers using it.
+
+<div align="center">
+
+![image](/assets/img/3.png)
+
+</div>
+
+And the `docker container inspect tutorial-container` also will show us the inspector where in some point it'll be and object called "Networks" that list the drivers used by the tutorial-container.
+
+<div align="center">
+
+![image](/assets/img/4.png)
+
+</div>
 
 </details>
 
+Now we know that the all the containers use this driver by default. That means that we can connect them through this network, right?
 
+---
+
+## Connecting containers in a network
+continuar daqui https://www.docker.com/blog/understanding-docker-networking-drivers-use-cases/
 
 <!--Docker implements the "networks" top level definition for network config for services. Using that resource, we can provide a default configuration on running containers and other composes.
 
@@ -133,7 +155,7 @@ Imagine two services in a compose: curl and app. Curl could connect to app using
 ```bash
 curl http://app
 ```
-
+ -->
 # Conclusion
 
-We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex shit on that video. Get a look if you want to dive into network or in devops career. -->
+We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex shit on that video. Get a look if you want to dive into network or in devops career.

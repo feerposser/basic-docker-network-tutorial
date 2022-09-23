@@ -26,5 +26,9 @@ db.init_app(app)
 def index():
     return jsonify(Model.objects.all())
 
+@app.route("/test")
+def test():
+    return "It works!"
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

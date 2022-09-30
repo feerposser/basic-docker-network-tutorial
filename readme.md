@@ -1,6 +1,6 @@
 (building)
 
-# Basic Docker network for developers
+# Basic Docker network for developers part 1
 
 >This is a explanation with examples about `docker network` for developers. Hope you enjoy (:
 
@@ -41,7 +41,7 @@ In the /tutorial folder, type the command below:
 
 `docker build . -t tutorial-image`
 
-This going to create an image for the Dockerfile in that folder. This file includes just two important elements:
+This going to create an image using the Dockerfile in that folder. This file includes just two important elements:
 
 1. the installation of all dependencies inside the requirements.txt file that includes `Flask` and `flask-mongoengine` packages
 2. the exposure of the 5000 port that is default by using Flask
@@ -68,7 +68,7 @@ After running the command above, we can check this out by typing the `docker ps`
 ![image](/assets/img/0.1.png)
 </div>
 
-If the status is up and running, this means that we're able to access the `flask` application on the following address: `http://localhost/test` and see the API "It works!" result.
+If the status is up and running, this means that we're able to access the `flask` application on the following address: `http://localhost/test` and see the API result telling that "It works!".
 
 <div align="center">
 
@@ -95,17 +95,17 @@ By default, Docker have three default network modes: bridge, host and none. We c
 
 ![image](/assets/img/2.png)
 
-Those are some of the [default Docker network drivers](https://docs.docker.com/network/). Bridge, the first one, as his name suggests, is used by containers that need to communicate. This is the default network driver of any container when we don't specify a driver. Also, this is the most commom drive that we're going to use for simple services aplications.
+Those are some of the [default Docker network drivers](https://docs.docker.com/network/). Bridge, the first one, as his name suggests, is used by containers that need to communicate. This is the default network driver of any container when we don't specify a driver. Also, this is the most commom drive that we're going to use for simple services aplications and architectures.
 
-Host is a driver that allows the container bind to the host network. If we used this driver, that means the container would beacome just like any other machine insede the network host.
+Host is a driver that allows the container bind to the host network. If we used this driver, that means the container would beacome just like any other machine inside the network host.
 
 Finally, the none driver means that really there is none network enable on the running container.
 
-><small>In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#conclusion) topic after reading (:</small>
+><small>In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#conclusion) topic or [reference](#references) after reading (:</small>
 
-As we saw, bridge is the default driver of any non specified container. So, our tutorial-container must be using this driver. We can see if this is true by accessing the network or the container inspector:
+As we saw, bridge is the default driver of any non specified network container. So, our tutorial-container must be using this driver. We can see if this is true by accessing the network or the container inspector.
 
-Typing `docker network inspect bridge` it will show us the bridge driver configuration. And in some point there is an object called "Containers" that contains all the containers using it.
+Typing `docker network inspect bridge` it will show us the bridge driver configuration. And in some point there is an object called "Containers" that contains all the containers using this driver.
 
 <div align="center">
 
@@ -113,7 +113,7 @@ Typing `docker network inspect bridge` it will show us the bridge driver configu
 
 </div>
 
-And the `docker container inspect tutorial-container` also will show us the inspector where in some point it'll be and object called "Networks" that list the drivers used by the tutorial-container.
+And the `docker container inspect tutorial-container` also will show us the inspector where in some point it'll be and object called "Networks" that list the networks used by the tutorial-container.
 
 <div align="center">
 
@@ -123,12 +123,36 @@ And the `docker container inspect tutorial-container` also will show us the insp
 
 </details>
 
-Now we know that the all the containers use this driver by default. That means that we can connect them through this network, right?
+Now we know that the all the containers use this driver by default. That means that we can connect them through this network, right? 
+
+So in the next step we going to create a database container that 'tutorial-container' can access.
 
 ---
 
 ## Connecting containers in a network
-continuar daqui https://www.docker.com/blog/understanding-docker-networking-drivers-use-cases/
+> In this step we going to create a database container which can be accessed by the 'tutorial-container'.
+
+<details>
+First things first, let's access the `localhost/` address and see what happens.
+
+<div align="center">
+
+![image](/assets/img/5.png)
+<small>If you try it, you'll get and 500 error.</small>
+</div>
+
+This is happening because when we try to reach the localhost root address, the `Flask` application try to connect in a `Mongodb` database and retrieve all the data inside him. You can verify this by openning and reading the comments whithin the [app.py file in the tutorial folder](/tutorial/app.py).
+
+> To solve this problem, let's try to create a Mongo container.
+
+</details>
+
+-> try loclahost/ . not work whithout db
+-> start the db
+-> try again. still not work
+-> inspect the networks and container
+-> create a network, run containers with the network and run everything
+
 
 <!--Docker implements the "networks" top level definition for network config for services. Using that resource, we can provide a default configuration on running containers and other composes.
 
@@ -159,3 +183,8 @@ curl http://app
 # Conclusion
 
 We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex shit on that video. Get a look if you want to dive into network or in devops career.
+
+# References
+<!--
+- https://www.docker.com/blog/understanding-docker-networking-drivers-use-cases/
+-->

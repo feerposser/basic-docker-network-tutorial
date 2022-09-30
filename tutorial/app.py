@@ -4,9 +4,10 @@ from flask_mongoengine import MongoEngine
 
 app = Flask(__name__)
 
+#mongoengine config
 app.config["MONGODB_SETTINGS"] = {
-    "db": "example",
-    "host": "mongo",
+    "db": "example", # database name
+    "host": "mongo", # host (container) name
     "username": "admin",
     "password": "admin",
     'authentication_source': 'admin'
@@ -14,6 +15,7 @@ app.config["MONGODB_SETTINGS"] = {
 
 db = MongoEngine()
 
+# default document
 class Model(db.Document):
     name = db.StringField(required=True)
     
@@ -24,6 +26,7 @@ db.init_app(app)
 
 @app.route("/")
 def index():
+    # get all the data and cast into a JSON
     return jsonify(Model.objects.all())
 
 @app.route("/test")

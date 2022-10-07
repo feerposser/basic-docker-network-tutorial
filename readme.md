@@ -13,9 +13,9 @@ But sometimes we also need to create something different or outside of the box a
 - [x] A basic `Python + Flask` app that connects in a `MongoDB` database
 - [x] `docker run` command line to create and connect containers
 - [x] How to create and check basic networks in docker
-- [x] Use `Docker Compose` and understant what is going on under the covers
 - [x] Understand how `docker` use `networks` to connect different `containers/services`
 - [x] How can you find what is wrong with your services connection issues
+- [ ] Use `Docker Compose` and understant what is going on under the covers
 - [ ] Learn how to use advanced `docker networks`
 - [ ] Learn how to configure `Docker Compose`
 - [ ] Get it all the basics for running containers and services on docker 
@@ -33,7 +33,7 @@ So let's get started.
 ---
 
 ## 1. Image creation
->In this example we're going to create an image with a Python Flask application that return "It works" on accessing localhost/test and connects in a database and return data in localhost/. To use this, first we need to create the image. If you already know how to build and start a container, go to the xx step.
+>In this example we're going to create an image with a Python Flask application that returns "It works" on accessing localhost/test and connects in a database and return data in localhost/. To use this, first we need to create the image. If you already know how to build and start a container, go to the [3 step](#3-where-is-the-network).
 
 <details>
 
@@ -44,7 +44,7 @@ In the /tutorial folder, type the command below:
 This going to create an image using the Dockerfile in that folder. This file includes just two important elements:
 
 1. the installation of all dependencies inside the requirements.txt file that includes `Flask` and `flask-mongoengine` packages
-2. the exposure of the 5000 port that is default by using Flask
+2. the exposure of the 5000 port that is default when using Flask
 
 After run the command, we can check if the image was created by typing `docker images`:
 
@@ -86,7 +86,7 @@ Here is what the command are actually doing:
 </details>
 
 
-## Where is the network?
+## 3 Where is the network?
 > After running a container, where is the network default functionality applyed by Docker?
 
 <details>
@@ -101,7 +101,7 @@ Host is a driver that allows the container bind to the host network. If we used 
 
 Finally, the none driver means that really there is none network enable on the running container.
 
-><small>In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#conclusion) topic or [reference](#references) after reading (:</small>
+><small>In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#4-conclusion) topic after reading (:</small>
 
 As we saw, bridge is the default driver of any non specified network container. So, our tutorial-container must be using this driver. We can see if this is true by accessing the network or the container inspector.
 
@@ -123,13 +123,13 @@ And the `docker container inspect tutorial-container` also will show us the insp
 
 </details>
 
-Now we know that the all the containers use this driver by default. That means that we can connect them through this network, right? 
+Now we know that all the containers use this driver by default. That means we can connect them through this network, right? 
 
-So in the next step we going to create a database container that 'tutorial-container' can access.
+So in the next step we going to create a database container which 'tutorial-container' can access.
 
 ---
 
-## Connecting containers in a network
+## 3.1 Connecting containers in a network
 > In this step we going to create a database container which can be accessed by the 'tutorial-container'.
 
 <details>
@@ -169,7 +169,7 @@ This is happening because we need to connect in a network.
 
 </details>
 
-## Creating a network
+## 3.2 Creating a network
 > In this section we'll create a bridge network and connect both containers on it. 
 
 <details>
@@ -232,7 +232,7 @@ Now our application container is successfully reaching the database container an
 
 </details>
 
-# Conclusion
+# 4 Conclusion
 
 We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take a look in <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex stuff on that video. Most part of the time you don't need to configure all those things if you're a developer and not a devops professional. 
 

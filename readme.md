@@ -138,53 +138,104 @@ First things first, let's access the `localhost/` address and see what happens.
 <div align="center">
 
 ![image](/assets/img/5.png)
-<small>If you try it, you'll get and 500 error.</small>
+<small>If you try it, you'll get an 500 error.</small>
 </div>
 
 This is happening because when we try to reach the localhost root address, the `Flask` application try to connect in a `Mongodb` database and retrieve all the data inside him. You can verify this by openning and reading the comments whithin the [app.py file in the tutorial folder](/tutorial/app.py).
 
 > To solve this problem, let's try to create a Mongo container.
 
+First things first, let take a look on the [docker image MongoDB documentation](https://hub.docker.com/_/mongo). To create a container using Mongo we can run the "mongo" official image and set the environment variables to match with the ones in the app.py file.
+
+`docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d --name tutorial-mongo-container mongo`
+
+If you don't have the mongo image on your local cache, Docker will download it on Docker Hub and run the container with name "tutorial-mongo-container" or any other name that you want.  You can check this out by typing `docker images` and `docker ps` to check the mongo image followed by the running container.
+
+And as you can imagine, while the container has been created, Docker set him to the bridge network driver.
+
+We can run the same command before to get a list of containers using bridge driver: `docker network inspect bridge`. And in the containers list we can found the mongodb container.
+
+<div align="center">
+
+![](/assets/img/6.png)
+<small>The same will happen if we run the docker container inspect tutorial-mongo-container. Bridge will be there in the network settings.</small>
+</div>
+
+Now, when we access the `localhost`, maybe a empty list of data will be sort in the screem?
+
+The answer is: no. The same Internal Server Error will appear. 
+
+This is happening because we need to connect in a network.
+
 </details>
 
--> try loclahost/ . not work whithout db
--> start the db
--> try again. still not work
--> inspect the networks and container
--> create a network, run containers with the network and run everything
+## Creating a network
+> In this section we'll create a bridge network and connect both containers on it. 
 
+<details>
 
-<!--Docker implements the "networks" top level definition for network config for services. Using that resource, we can provide a default configuration on running containers and other composes.
+To do this, first let's stop the containers and after the network creation we can start them using the container network flag.
 
-Docker by default creates tree network: bridge, host and none.
+`docker stop tutorial-mongo-container tutorial-container`
 
--------docker network ls image
+To create a new Docker bridge network, just type the command below:
 
-## bridge
+`docker network create tutorial-network`
 
-Create a bridge between containers. Can be used to connect services. When a docker-compose with multiple services up, docker create a default network for connection between services layers.
+Docker uses the bridge driver as default to create containers and also to create networks. Running `docker network ls` you be able to see the network in the list:
 
---------- IMAGE 1
+<div align="center">
 
-Every service in the compose will be configured with this default network.
+![image](/assets/img/7.png)
 
-```docker
-docker container inspect container-name
-```
+</div>
 
--------- IMAGE 2
+Now, when on run the containers we must use the --network flag to specify the network that we just created. 
 
-Docker uses the default created network for connections between services. This allows a service connect to another using the name of the service as an alias for the host address.
-Imagine two services in a compose: curl and app. Curl could connect to app using
-```bash
-curl http://app
-```
- -->
+`docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d --name tutorial-mongo-container --network tutorial-network mongo`
+
+`docker run --name tutorial-container -p 80:5000 -d --network tutorial-network tutorial-image`
+
+To certify that both containers are in the same network, we can inspect the tutrial-network by typing
+
+`docker network inspect tutorial-network`
+
+<div align="center">
+
+![image](/assets/img/8.png)
+
+</div>
+
+And when we access the `localhost`, we expect to see a empty list of data. But this will not happn. The same Internal Server Error will appear. But Why?
+
+The answer is simple. In the app.py file, on the mongodb configuration, the "host" attribute needto be set with the database ip address or domain. 
+
+But when we're using Docker in this situation, we do not need to get the ip address and set manually. We can just use the container name as the domain because Docker implements an internal DNS (Domain Name Service) that can handdle everything for us. Cool isn't?
+
+The tutorial-image generated with the app.py we're using "mongo" as the domain name of the database. To be able to connect in our mongo container we can fix in two ways:
+
+1. Stop the tutorial-container, delete his image, update the app.py file to use the name of our container, build the image again and run the container.
+2. Just stop the mongo container and start it again using "mongo" as the container name.
+
+As the second solution is more simples for this example, I'll choose this one. 
+
+1. docker stop tutorial-mongo-container
+2. docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d --network tutorial-network --name mongo mongo
+
+<div align="center">
+
+![](/assets/img/9.png)
+
+</div>
+
+Now our application container is successfully reaching the database container and retrieve all his data (in this case there is no one, but you get the idea).
+
+</details>
+
 # Conclusion
 
-We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex shit on that video. Get a look if you want to dive into network or in devops career.
+We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take a look in <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex stuff on that video. Most part of the time you don't need to configure all those things if you're a developer and not a devops professional. 
 
-# References
-<!--
-- https://www.docker.com/blog/understanding-docker-networking-drivers-use-cases/
--->
+And if you want to read a little more about Docker networks, get a look in [this post of Docker's blog](https://www.docker.com/blog/understanding-docker-networking-drivers-use-cases/) to understand more from what happn under the covers.
+
+Cheers (:

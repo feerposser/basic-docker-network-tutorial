@@ -145,7 +145,7 @@ This is happening because when we try to reach the localhost root address, the `
 
 > To solve this problem, let's try to create a Mongo container.
 
-First things first, let take a look on the [docker image MongoDB documentation](https://hub.docker.com/_/mongo). To create a container using Mongo we can run the "mongo" official image and set the environment variables to match with the ones in the app.py file.
+First things first, let's take a look on the [MongoDB Docker image documentation](https://hub.docker.com/_/mongo). To create a container using Mongo we can run the "mongo" official image and set the environment variables to match with the ones in the app.py file. If you don't know what are the environment variables, take a look on my previus post by [clicking here](https://feerposser.medium.com/docker-and-docker-compose-env-file-tutorial-daefb5605e0e).
 
 `docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d --name tutorial-mongo-container mongo`
 
@@ -153,19 +153,19 @@ If you don't have the mongo image on your local cache, Docker will download it o
 
 And as you can imagine, while the container has been created, Docker set him to the bridge network driver.
 
-We can run the same command before to get a list of containers using bridge driver: `docker network inspect bridge`. And in the containers list we can found the mongodb container.
+We can run the same command used before to get a list of containers using bridge driver: `docker network inspect bridge`. And in the containers list we can found the mongodb container.
 
 <div align="center">
 
 ![](/assets/img/6.png)
-<small>The same will happen if we run the docker container inspect tutorial-mongo-container. Bridge will be there in the network settings.</small>
+<small>The same will happen if we run "docker container inspect tutorial-mongo-container". Bridge will be there in the network settings.</small>
 </div>
 
-Now, when we access the `localhost`, maybe a empty list of data will be sort in the screem?
+Now, when we access the `localhost`, maybe a empty list of data will be sort in the screem, right?
 
 The answer is: no. The same Internal Server Error will appear. 
 
-This is happening because we need to connect in a network.
+This is happening because we need to connect both containers in a same network.
 
 </details>
 
@@ -190,7 +190,7 @@ Docker uses the bridge driver as default to create containers and also to create
 
 </div>
 
-Now, when on run the containers we must use the --network flag to specify the network that we just created. 
+Now, when we run the containers we must use the --network flag to specify the network that we just created. 
 
 `docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d --name tutorial-mongo-container --network tutorial-network mongo`
 
@@ -208,11 +208,11 @@ To certify that both containers are in the same network, we can inspect the tutr
 
 And when we access the `localhost`, we expect to see a empty list of data. But this will not happn. The same Internal Server Error will appear. But Why?
 
-The answer is simple. In the app.py file, on the mongodb configuration, the "host" attribute needto be set with the database ip address or domain. 
+The answer is simple. In the app.py file, on the mongodb configuration, the "host" attribute need to be set with the database ip address or domain. 
 
 But when we're using Docker in this situation, we do not need to get the ip address and set manually. We can just use the container name as the domain because Docker implements an internal DNS (Domain Name Service) that can handdle everything for us. Cool isn't?
 
-The tutorial-image generated with the app.py we're using "mongo" as the domain name of the database. To be able to connect in our mongo container we can fix in two ways:
+The tutorial-image generated with the app.py are using "mongo" as the domain name of the database. To be able to connect in our mongo container we can fix in two ways:
 
 1. Stop the tutorial-container, delete his image, update the app.py file to use the name of our container, build the image again and run the container.
 2. Just stop the mongo container and start it again using "mongo" as the container name.

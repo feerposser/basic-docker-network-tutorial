@@ -1,6 +1,4 @@
-(building)
-
-# Basic Docker network for developers part 1
+# Basic Docker network for developers
 
 >This is a explanation with examples of `docker network` for developers. Hope you enjoy (:
 

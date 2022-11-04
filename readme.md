@@ -44,7 +44,7 @@ In the /tutorial folder, type the command below:
 This going to create an image using the Dockerfile in that folder. This file includes just two important elements:
 
 1. the installation of all dependencies inside the requirements.txt file that includes `Flask` and `flask-mongoengine` packages
-2. the exposure of the 5000 port that is default when using Flask
+2. running the app.py when it finishes
 
 After running the command, we can check if the image was created by typing `docker images`:
 
@@ -79,7 +79,7 @@ If the status is up and running, this means that we're able to access the `flask
 Here is what the command is actually doing:
 
 1. --name able us to set a name to the container, as can be verified in the `docker ps` result. If we skip this, Docker will set a name randomly for us.
-2. -p flag is very important to make the application works. If we jump over this, nothing will work by accessing localhost/test. -p means that we're connecting the 80 port of the host to the 5000 port of the container. Remember the `expose 5000` in the Dockerfile and that the Flask uses this port by default? Whitout this flag we're not able to reach the application running inside the container.
+2. -p flag is very important to make the application works. If we jump over this, nothing will work by accessing localhost/test. -p means that we're connecting the 80 port of the host to the 5000 port of the container. Do yout remember that the Flask uses 5000 port by default? Whitout this flag we're not able to reach the application running inside the container.
 3. -d flag is just to run the container in background mode, so we can keep using the terminal to run some other commands.
 4. Last but not least, the "tutorial-image" is just the image that we wanna run.
 

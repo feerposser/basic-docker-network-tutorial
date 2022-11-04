@@ -2,20 +2,20 @@
 
 # Basic Docker network for developers part 1
 
->This is a explanation with examples about `docker network` for developers. Hope you enjoy (:
+>This is a explanation with examples of `docker network` for developers. Hope you enjoy (:
 
-When we talk about diferent docker services connecting each other, it is implicit that we're using networks. Depending on what you're creating, maybe there is no reasons to worry about create and managing networks because sometimes Docker runs everything for us in background and everything works fine. 
+When we talk about different docker services connecting each other, it is implicit that we're using networks. Depending on what you're creating, maybe there are no reasons to worry about creating and managing networks because sometimes Docker runs everything for us in the background and everything works fine. 
 
-But sometimes we also need to create something different or outside of the box and you're going need to understand what is going on inside your Docker container/services.
+But sometimes we also need to create something different or outside of the box and you're going to need to understand what is going on inside your Docker container/services.
 
 ## What you're going to find (and not to find) in this tutorial
 
-- [x] A basic `Python + Flask` app that connects in a `MongoDB` database
+- [x] A basic `Python + Flask` app that connects to a `MongoDB` database
 - [x] `docker run` command line to create and connect containers
 - [x] How to create and check basic networks in docker
-- [x] Understand how `docker` use `networks` to connect different `containers/services`
+- [x] Understand how `docker` uses `networks` to connect different `containers/services`
 - [x] How can you find what is wrong with your services connection issues
-- [ ] Use `Docker Compose` and understant what is going on under the covers
+- [ ] Use `Docker Compose` and understand what is going on under the covers
 - [ ] Learn how to use advanced `docker networks`
 - [ ] Learn how to configure `Docker Compose`
 - [ ] Get it all the basics for running containers and services on docker 
@@ -24,7 +24,7 @@ But sometimes we also need to create something different or outside of the box a
 
 First things first, Docker use networks for what? Well, the answer is simple: for the same reason that any PC or virtual machine also use them to share and consume third parties resources. 
 
-Every computer machine that need to connect with some outside world feature will need a network interface for doing that. The same will happen with Docker. When we start a container, Docker will automatically connect him on the netowrk system. 
+Every computer machine that needs to connect with some outside world feature will need a network interface for doing that. The same will happen with Docker. When we start a container, Docker will automatically connect it on the netowrk system. 
 
 It'll be nice see that in action, right? 
 
@@ -46,7 +46,7 @@ This going to create an image using the Dockerfile in that folder. This file inc
 1. the installation of all dependencies inside the requirements.txt file that includes `Flask` and `flask-mongoengine` packages
 2. the exposure of the 5000 port that is default when using Flask
 
-After run the command, we can check if the image was created by typing `docker images`:
+After running the command, we can check if the image was created by typing `docker images`:
 
 ![image](/assets/img/0.png)
 
@@ -57,7 +57,7 @@ After run the command, we can check if the image was created by typing `docker i
 > After build the image, next step consist in running the container and testing him.
 <details>
 
-To running the image, we can type the command below:
+To run the image, we can type the command below:
 
 `docker run --name tutorial-container -p 80:5000 -d tutorial-image`
 
@@ -76,7 +76,7 @@ If the status is up and running, this means that we're able to access the `flask
 
 </div>
 
-Here is what the command are actually doing:
+Here is what the command is actually doing:
 
 1. --name able us to set a name to the container, as can be verified in the `docker ps` result. If we skip this, Docker will set a name randomly for us.
 2. -p flag is very important to make the application works. If we jump over this, nothing will work by accessing localhost/test. -p means that we're connecting the 80 port of the host to the 5000 port of the container. Remember the `expose 5000` in the Dockerfile and that the Flask uses this port by default? Whitout this flag we're not able to reach the application running inside the container.
@@ -101,9 +101,9 @@ Host is a driver that allows the container bind to the host network. If we used 
 
 Finally, the none driver means that really there is none network enable on the running container.
 
-><small>In the [Docker documentation there is also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#4-conclusion) topic after reading (:</small>
+><small>In the [Docker documentation there are also the overlay, ipvlan and macvlan](https://docs.docker.com/network/) drivers. But in this article we're going to use bridge only. If you want more examples of those other drivers, check out the [conclusion](#4-conclusion) topic after reading (:</small>
 
-As we saw, bridge is the default driver of any non specified network container. So, our tutorial-container must be using this driver. We can see if this is true by accessing the network or the container inspector.
+As we saw, bridge is the default driver of any non specified network container. So, our tutorial-container must be using this driver. We can see whether this is true by accessing the network or the container inspector.
 
 Typing `docker network inspect bridge` it will show us the bridge driver configuration. And in some point there is an object called "Containers" that contains all the containers using this driver.
 
@@ -130,7 +130,7 @@ So in the next step we going to create a database container which 'tutorial-cont
 ---
 
 ## 3.1 Connecting containers in a network
-> In this step we going to create a database container which can be accessed by the 'tutorial-container'.
+> In this step we're going to create a database container which can be accessed by the 'tutorial-container'.
 
 <details>
 First things first, let's access the `localhost/` address and see what happens.
@@ -141,7 +141,7 @@ First things first, let's access the `localhost/` address and see what happens.
 <small>If you try it, you'll get an 500 error.</small>
 </div>
 
-This is happening because when we try to reach the localhost root address, the `Flask` application try to connect in a `Mongodb` database and retrieve all the data inside him. You can verify this by openning and reading the comments whithin the [app.py file in the tutorial folder](/tutorial/app.py).
+This is happening because when we try to reach the localhost root address, the `Flask` application try to connect in a `Mongodb` database and retrieve all the data inside it. You can verify this by openning and reading the comments whithin the [app.py file in the tutorial folder](/tutorial/app.py).
 
 > To solve this problem, let's try to create a Mongo container.
 
@@ -210,14 +210,14 @@ And when we access the `localhost`, we expect to see a empty list of data. But t
 
 The answer is simple. In the app.py file, on the mongodb configuration, the "host" attribute need to be set with the database ip address or domain. 
 
-But when we're using Docker in this situation, we do not need to get the ip address and set manually. We can just use the container name as the domain because Docker implements an internal DNS (Domain Name Service) that can handdle everything for us. Cool isn't?
+But when we're using Docker in this situation, we do not need to get the ip address and set it manually. We can just use the container name as the domain because Docker implements an internal DNS (Domain Name Service) that can handdle everything for us. Cool isn't it?
 
 The tutorial-image generated with the app.py are using "mongo" as the domain name of the database. To be able to connect in our mongo container we can fix in two ways:
 
-1. Stop the tutorial-container, delete his image, update the app.py file to use the name of our container, build the image again and run the container.
+1. Stop the tutorial-container, delete its image, update the app.py file to use the name of our container, build the image again and run the container.
 2. Just stop the mongo container and start it again using "mongo" as the container name.
 
-As the second solution is more simples for this example, I'll choose this one. 
+As the second solution is  simpler for this example, I'll choose this one. 
 
 1. docker stop tutorial-mongo-container
 2. docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -d --network tutorial-network --name mongo mongo
@@ -228,14 +228,14 @@ As the second solution is more simples for this example, I'll choose this one.
 
 </div>
 
-Now our application container is successfully reaching the database container and retrieve all his data (in this case there is no one, but you get the idea).
+Now our application container is successfully reaching the database container and retrieve all its data (in this case there is no one, but you get the idea).
 
 </details>
 
 # 4 Conclusion
 
-We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take a look in <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex stuff on that video. Most part of the time you don't need to configure all those things if you're a developer and not a devops professional. 
+We saw some basics from Docker Network. Now, if you want to get some more complex or other network definitions, you can take a look in <a src="https://www.youtube.com/watch?v=bKFMS5C4CG0">this tutorial</a> from NetworkChuck. I not gonna lie. Crazy amazing complex stuff on that video. Most part of the time you don't need to configure all those things if you're a developer and not a professional devops. 
 
-And if you want to read a little more about Docker networks, get a look in [this post of Docker's blog](https://www.docker.com/blog/understanding-docker-networking-drivers-use-cases/) to understand more from what happn under the covers.
+And if you want to read a little more about Docker networks, get a look in [this post of Docker's blog](https://www.docker.com/blog/understanding-docker-networking-drivers-use-cases/) to understand more from what happn behind the scenes.
 
 Cheers (:

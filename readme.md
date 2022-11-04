@@ -2,6 +2,14 @@
 
 >This is a explanation with examples of `docker network` for developers. Hope you enjoy (:
 
+<div align="center">
+
+![image](/assets/img/Docker%20NETWORK%20FOR%20DEVS.png)
+
+</div>
+<br>
+<hr>
+<br>
 When we talk about different docker services connecting each other, it is implicit that we're using networks. Depending on what you're creating, maybe there are no reasons to worry about creating and managing networks because sometimes Docker runs everything for us in the background and everything works fine. 
 
 But sometimes we also need to create something different or outside of the box and you're going to need to understand what is going on inside your Docker container/services.

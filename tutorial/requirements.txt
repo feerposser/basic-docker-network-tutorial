@@ -1,2 +1,2 @@
-Flask
+Flask==2.2.5
 flask-mongoengine==1.0.0
